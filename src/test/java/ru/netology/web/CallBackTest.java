@@ -439,9 +439,10 @@ public class CallBackTest {
         $("[data-test-id='phone'] input").setValue("+7-998-877-88-99");
         $("[data-test-id=agreement]").click();
         $(".button").click();
-        $("[data-test-d='phone'].input_invalid .input__sub").shouldHave(exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+        $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
 
     }
+
 
 
     @Test
