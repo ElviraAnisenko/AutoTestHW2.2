@@ -342,19 +342,19 @@ public class CallBackTest {
 
     }
 
-//    @Test
-//    void shouldTestWithNamAndWithoutSurname() {
-//        $("[data-test-id='city'] input").setValue("Москва");
-//        String choiceDate = LocalDateTime.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-//        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-//        $("[data-test-id='date'] input").setValue(choiceDate);
-//        $("[data-test-id='name'] input").setValue("Эльвира");
-//        $("[data-test-id='phone'] input").setValue("+79988778899");
-//        $("[data-test-id=agreement]").click();
-//        $(".button").click();
-//        $("[data-test-id='name'].input_invalid .input__sub").shouldHave(exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
-//
-//    }
+    @Test
+    void shouldTestWithNamAndWithoutSurname() {
+        $("[data-test-id='city'] input").setValue("Москва");
+        String choiceDate = LocalDateTime.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(choiceDate);
+        $("[data-test-id='name'] input").setValue("Эльвира");
+        $("[data-test-id='phone'] input").setValue("+79988778899");
+        $("[data-test-id=agreement]").click();
+        $(".button").click();
+        $("[data-test-id='name'].input_invalid .input__sub").shouldHave(exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+
+    }
 
 
     @Test
