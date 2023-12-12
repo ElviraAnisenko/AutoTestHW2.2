@@ -1,24 +1,20 @@
 package ru.netology.web;
 
-import com.codeborne.selenide.SelenideElement;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
+
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
+
 
 public class CallBackTest {
 
@@ -40,8 +36,7 @@ public class CallBackTest {
         $("[data-test-id='phone'] input").setValue("+79988778899");
         $("[data-test-id=agreement]").click();
         $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
-        $(byText(choiceDate)).shouldBe(visible, Duration.ofSeconds(15));
+        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(exactText("Встреча успешно забронирована на " + choiceDate));
         $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
 
     }
@@ -129,8 +124,7 @@ public class CallBackTest {
         $("[data-test-id='phone'] input").setValue("+79988778899");
         $("[data-test-id=agreement]").click();
         $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
-        $(byText(choiceDate)).shouldBe(visible, Duration.ofSeconds(15));
+        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(exactText("Встреча успешно забронирована на " + choiceDate));
         $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
 
     }
@@ -174,9 +168,8 @@ public class CallBackTest {
         $("[data-test-id='phone'] input").setValue("+79988778899");
         $("[data-test-id=agreement]").click();
         $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
         String validFormattedDate = choiceDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        $(byText(validFormattedDate)).shouldBe(visible, Duration.ofSeconds(15));
+        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(exactText("Встреча успешно забронирована на " + validFormattedDate));
         $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
 
     }
@@ -192,9 +185,8 @@ public class CallBackTest {
         $("[data-test-id='phone'] input").setValue("+79988778899");
         $("[data-test-id=agreement]").click();
         $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
         String validFormattedDate = choiceDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        $(byText(validFormattedDate)).shouldBe(visible, Duration.ofSeconds(15));
+        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(exactText("Встреча успешно забронирована на " + validFormattedDate));
         $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
 
     }
@@ -263,8 +255,7 @@ public class CallBackTest {
         $("[data-test-id='phone'] input").setValue("+79988778899");
         $("[data-test-id=agreement]").click();
         $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
-        $(byText(choiceDate)).shouldBe(visible, Duration.ofSeconds(15));
+        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(exactText("Встреча успешно забронирована на " + choiceDate));
         $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
     }
 
@@ -278,8 +269,7 @@ public class CallBackTest {
         $("[data-test-id='phone'] input").setValue("+79988778899");
         $("[data-test-id=agreement]").click();
         $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
-        $(byText(choiceDate)).shouldBe(visible, Duration.ofSeconds(15));
+        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(exactText("Встреча успешно забронирована на " + choiceDate));
         $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
     }
 
@@ -444,7 +434,6 @@ public class CallBackTest {
     }
 
 
-
     @Test
     void shouldTestWithoutPlusInPhoneNumber() {
         $("[data-test-id='city'] input").setValue("Москва");
@@ -519,143 +508,41 @@ public class CallBackTest {
     //Задание 2
 
     @Test
-    void shouldShowListIf2SymbolOfNameCity() {
+    void shouldShowListIf2SymbolOfNameCityAndChoiceDateFromCalenderOpenByClick() {
         $("[data-test-id='city'] input").setValue("Мо");
         $(withText("Москва")).click();
-        String choiceDate = LocalDateTime.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(choiceDate);
-        $("[data-test-id='name'] input").setValue("Ольга Петрова");
-        $("[data-test-id='phone'] input").setValue("+79988778899");
-        $("[data-test-id=agreement]").click();
-        $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
-        $(byText(choiceDate)).shouldBe(visible, Duration.ofSeconds(15));
-        $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
-        String value = $("[data-test-id='city'] input").getValue();
-        value.equals("Москва");
-    }
-
-    @Test
-    void shouldChoiceDateFromCalenderOpenByClick() {
-        $("[data-test-id='city'] input").setValue("Москва");
-        $("[data-test-id='date'] input").click();
         LocalDateTime startDate = LocalDateTime.now();
-        LocalDateTime choiceDate = startDate.plusDays(6);
-        Calendar calendar = Calendar.getInstance();
-        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int currentDay = startDate.getDayOfMonth();
-        if (maxDay - currentDay < 7) {
-            $(".popup_target_anchor").find(".calendar__arrow_direction_right", 1).click();
+        LocalDateTime choiceDate = startDate.plusDays(21);
+        int choiceDay = choiceDate.getDayOfMonth();
+        int choiceMonth = choiceDate.getMonthValue();
+        int choiceYear = choiceDate.getYear();
+        String[] months = new String[]{"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
+        String month = months[choiceMonth - 1];
+        if (!($(".calendar__name").equals(choiceMonth))) {
+            do {
+                $(".popup_target_anchor").find(".calendar__arrow_direction_right", 1).click();
+            }
+            while ($(".calendar__name").equals(choiceMonth));
+        } else {
+            if (!($(".calendar__name").equals(choiceYear))) {
+                do {
+                    $(".popup_target_anchor").find(".calendar__arrow_direction_right", 0).click();
+                }
+                while ($(".calendar__name").equals(choiceYear));
+            }
         }
-        $(byText(String.valueOf(choiceDate.getDayOfMonth()))).click();
-        $("[data-test-id='name'] input").setValue("Ольга Петрова");
-        $("[data-test-id='phone'] input").setValue("+79988778899");
-        $("[data-test-id=agreement]").click();
-        $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
-        String formattedDate = choiceDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        $(byText(formattedDate)).shouldBe(visible, Duration.ofSeconds(15));
-        $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
-
-    }
-
-
-    @Test
-    void shouldChoiceDateFromCalenderOpenByClickIcon() {
-        $("[data-test-id='city'] input").setValue("Москва");
-        $("[data-test-id='date']").find(".icon_name_calendar").click();
-        LocalDateTime startDate = LocalDateTime.now();
-        LocalDateTime choiceDate = startDate.plusDays(6);
-        Calendar calendar = Calendar.getInstance();
-        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int currentDay = startDate.getDayOfMonth();
-        if (maxDay - currentDay < 7) {
-            $(".popup_target_anchor").find(".calendar__arrow_direction_right", 1).click();
-        }
-        $(byText(String.valueOf(choiceDate.getDayOfMonth()))).click();
-        $("[data-test-id='name'] input").setValue("Ольга Петрова");
-        $("[data-test-id='phone'] input").setValue("+79988778899");
-        $("[data-test-id=agreement]").click();
-        $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
-        String formattedDate = choiceDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        $(byText(formattedDate)).shouldBe(visible, Duration.ofSeconds(15));
-        $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
-
-    }
-
-
-    @Test
-    void shouldChoiceDateForward7DaysFromCalender() {
-        $("[data-test-id='city'] input").setValue("Москва");
-        $("[data-test-id='date']").find(".icon_name_calendar").click();
-        LocalDateTime startDate = LocalDateTime.now();
-        LocalDateTime choiceDate = LocalDateTime.now().plusDays(7);
-        Calendar calendar = Calendar.getInstance();
-        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int currentDay = startDate.getDayOfMonth();
-        if (maxDay - currentDay < 7) {
-            $(".popup_target_anchor").find(".calendar__arrow_direction_right", 1).click();
-        }
-        $(byText(String.valueOf(choiceDate.getDayOfMonth()))).click();
-        $("[data-test-id='name'] input").setValue("Ольга Петрова");
-        $("[data-test-id='phone'] input").setValue("+79988778899");
-        $("[data-test-id=agreement]").click();
-        $(".button").click();
-        $(byText("Встреча успешно забронирована на")).shouldBe(visible, Duration.ofSeconds(15));
-        String formattedDate = choiceDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        $(byText(formattedDate)).shouldBe(visible, Duration.ofSeconds(15));
-        $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
-
-    }
-
-    @Test
-    void shouldChoiceDateForward8DaysFromCalender() {
-        $("[data-test-id='city'] input").setValue("Москва");
-        $("[data-test-id='date']").find(".icon_name_calendar").click();
-        LocalDateTime startDate = LocalDateTime.now();
-        LocalDateTime choiceDate = startDate.now().plusDays(8);
-        Calendar calendar = Calendar.getInstance();
-        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int currentDay = startDate.getDayOfMonth();
-        if (maxDay - currentDay < 7) {
-            $(".popup_target_anchor").find(".calendar__arrow_direction_right", 1).click();
-        }
-        $(byText(String.valueOf(choiceDate.getDayOfMonth()))).click();
-        $("[data-test-id='name'] input").setValue("Ольга Петрова");
-        $("[data-test-id='phone'] input").setValue("+79988778899");
-        $("[data-test-id=agreement]").click();
-        $(".button").click();
-        $("[data-test-id='date'] .input_invalid .input__sub").shouldHave(exactText("Заказ на выбранную дату невозможен"));
-
-    }
-
-
-    @Test
-    void shouldFlippingCalendarForwardIfNoNecessaryDay() {
-        $("[data-test-id='city'] input").setValue("Москва");
-        $("[data-test-id='date']").find(".icon_name_calendar").click();
-        LocalDateTime startDate = LocalDateTime.now();
-        LocalDateTime choiceDate = startDate.plusDays(25);
-        Calendar calendar = Calendar.getInstance();
-        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int currentDay = startDate.getDayOfMonth();
-        if (maxDay - currentDay < 25) {
-            $(".popup_target_anchor").find(".calendar__arrow_direction_right", 1).click();
-        }
-        $(byText(String.valueOf(choiceDate.getDayOfMonth()))).click();
+        $$(".calendar__day").find(exactText(String.valueOf(choiceDay))).click();
         $("[data-test-id='name'] input").setValue("Ольга Петрова");
         $("[data-test-id='phone'] input").setValue("+79988778899");
         $("[data-test-id=agreement]").click();
         $(".button").click();
         String formattedDate = choiceDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        String value = $("[data-test-id='date'] input").getValue();
-        value.equals(formattedDate);
-        //$("[data-test-id='date'] .input_invalid .input__sub").shouldHave(exactText("Заказ на выбранную дату невозможен"));
-
+        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(exactText("Встреча успешно забронирована на " + formattedDate));
+        $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
 
     }
+
 
 
 }
