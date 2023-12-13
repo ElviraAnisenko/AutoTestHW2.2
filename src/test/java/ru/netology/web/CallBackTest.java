@@ -1,6 +1,10 @@
 package ru.netology.web;
 
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.google.common.collect.Table;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
@@ -8,6 +12,7 @@ import org.openqa.selenium.Keys;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 
 import static com.codeborne.selenide.Condition.*;
@@ -510,29 +515,17 @@ public class CallBackTest {
     @Test
     void shouldShowListIf2SymbolOfNameCityAndChoiceDateFromCalenderOpenByClick() {
         $("[data-test-id='city'] input").setValue("Мо");
-        $(withText("Москва")).click();
+        $(".popup_visible").$$(".menu-item").findBy(text("Москва")).click();
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.BACK_SPACE);
         LocalDateTime startDate = LocalDateTime.now();
-        LocalDateTime choiceDate = startDate.plusDays(21);
+        int currentDay = startDate.getDayOfMonth();
+        LocalDateTime choiceDate = startDate.plusDays(6);
         int choiceDay = choiceDate.getDayOfMonth();
-        int choiceMonth = choiceDate.getMonthValue();
-        int choiceYear = choiceDate.getYear();
-        String[] months = new String[]{"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
-        String month = months[choiceMonth - 1];
-        if (!($(".calendar__name").equals(choiceMonth))) {
-            do {
-                $(".popup_target_anchor").find(".calendar__arrow_direction_right", 1).click();
-            }
-            while ($(".calendar__name").equals(choiceMonth));
-        } else {
-            if (!($(".calendar__name").equals(choiceYear))) {
-                do {
-                    $(".popup_target_anchor").find(".calendar__arrow_direction_right", 0).click();
-                }
-                while ($(".calendar__name").equals(choiceYear));
-            }
+        int maxDayMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+        if (maxDayMonth - currentDay < 7) {
+            $(".popup_target_anchor").find(".calendar__arrow_direction_right", 1).click();
         }
-        $$(".calendar__day").find(exactText(String.valueOf(choiceDay))).click();
+        $(".calendar__layout").$$(".calendar__row .calendar__day").findBy(text(String.valueOf(choiceDay))).click();
         $("[data-test-id='name'] input").setValue("Ольга Петрова");
         $("[data-test-id='phone'] input").setValue("+79988778899");
         $("[data-test-id=agreement]").click();
